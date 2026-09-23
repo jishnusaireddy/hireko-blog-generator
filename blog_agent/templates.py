@@ -3084,8 +3084,14 @@ async def render_full_html_package_async(
 </html>
 """
 
+    # Inline CSS into the HTML so it works as a standalone file (Railway API, blob URLs)
+    inlined_html = html_document.replace(
+        '<link rel="stylesheet" href="styles.css">',
+        f'<style>\n{css_content}\n</style>'
+    )
+
     return {
-        "index.html": html_document,
+        "index.html": inlined_html,
         "styles.css": css_content,
         "hero.svg": "",
         "assets": hireko_assets if template_name in ("Hireko Editorial", "Hireko Vercel Editorial") else {}
