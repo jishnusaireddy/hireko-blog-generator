@@ -36,7 +36,7 @@ load_dotenv()
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 import uvicorn
 
@@ -61,6 +61,7 @@ TEMPLATE_CHOICES = [
 ]
 
 SERVER_START_TIME = datetime.now(timezone.utc)
+LATEST_GENERATED_HTML: Dict[str, str] = {}
 
 # ---------------------------------------------------------------------------
 # Pydantic Request / Response Models
@@ -123,6 +124,7 @@ class BlogGenerateResponse(BaseModel):
     source_quality: str = ""
     duration_seconds: float = 0.0
     article_html: str = ""
+    view_url: str = ""
 
 
 class ErrorResponse(BaseModel):
@@ -252,6 +254,10 @@ async def generate_blog(request: BlogGenerateRequest):
             with open(index_path, "r", encoding="utf-8") as article_file:
                 article_html = article_file.read()
 
+        if article_html:
+            LATEST_GENERATED_HTML[request.name] = article_html
+            LATEST_GENERATED_HTML["latest"] = article_html
+
         return BlogGenerateResponse(
             success=True,
             message="Blog generated successfully!",
@@ -265,6 +271,7 @@ async def generate_blog(request: BlogGenerateRequest):
             source_quality=result.get("source_quality", ""),
             duration_seconds=duration,
             article_html=article_html,
+            view_url=f"/view/{request.name}",
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -353,6 +360,46 @@ async def list_blogs():
         count=len(blogs),
         output_dir=DEFAULT_OUTPUT_DIR,
     )
+
+
+# ---------------------------------------------------------------------------
+# Direct HTML Article Viewer Endpoints
+# ---------------------------------------------------------------------------
+
+
+@app.get(
+    "/view/{name}",
+    response_class=HTMLResponse,
+    summary="View generated blog article",
+    description="Returns the full, self-contained HTML page for the specified blog article with all styles and assets.",
+    tags=["Blog Management"],
+)
+async def view_article(name: str):
+    """View a generated blog directly in the browser with full styling."""
+    if name in LATEST_GENERATED_HTML:
+        return HTMLResponse(content=LATEST_GENERATED_HTML[name], media_type="text/html; charset=utf-8")
+
+    article_path = os.path.join(DEFAULT_OUTPUT_DIR, name, "index.html")
+    if os.path.isfile(article_path):
+        with open(article_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read(), media_type="text/html; charset=utf-8")
+
+    if "latest" in LATEST_GENERATED_HTML:
+        return HTMLResponse(content=LATEST_GENERATED_HTML["latest"], media_type="text/html; charset=utf-8")
+
+    raise HTTPException(status_code=404, detail=f"Article '{name}' not found. Please generate it first.")
+
+
+@app.get(
+    "/view",
+    response_class=HTMLResponse,
+    summary="View latest generated blog article",
+    description="Returns the most recently generated blog article HTML.",
+    tags=["Blog Management"],
+)
+async def view_latest_article():
+    """View the most recently generated blog article."""
+    return await view_article("latest")
 
 
 # ---------------------------------------------------------------------------

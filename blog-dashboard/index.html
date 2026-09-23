@@ -1119,12 +1119,15 @@
             modalResultStats.style.display = 'flex';
 
             releaseGeneratedBlogUrl();
-            if (data.article_html) {
+            if (data.view_url) {
+              viewLink.href = data.view_url;
+            } else if (data.article_html) {
               generatedBlogUrl = URL.createObjectURL(new Blob([data.article_html], { type: 'text/html' }));
               viewLink.href = generatedBlogUrl;
             } else {
               viewLink.href = data.index_url || '/output/article/index.html';
             }
+            viewLink.target = "_blank";
             viewLink.style.display = '';
             modalActions.style.display = 'flex';
           } else {

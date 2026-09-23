@@ -1731,6 +1731,90 @@ body {
   margin-top: 0;
 }
 
+.hireko-author-card {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--hireko-border);
+  border-radius: 8px;
+  background: var(--hireko-soft);
+}
+
+.author-avatar {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--hireko-navy);
+  color: var(--hireko-cerulean);
+}
+
+.author-hireko-symbol {
+  width: 32px;
+  height: 32px;
+}
+
+.author-info {
+  flex: 1;
+}
+
+.author-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.author-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--hireko-navy);
+}
+
+.author-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--hireko-cerulean);
+  background: rgba(0, 161, 212, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.author-role {
+  font-size: 0.85rem;
+  color: var(--hireko-muted);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.author-bio {
+  font-size: 0.92rem;
+  color: #344458;
+  line-height: 1.6;
+  margin: 0 0 0.75rem 0;
+}
+
+.author-social {
+  display: flex;
+  gap: 0.8rem;
+  font-size: 0.82rem;
+}
+
+.author-social a {
+  color: var(--hireko-cerulean);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.author-social a:hover {
+  text-decoration: underline;
+}
+
 .hireko-related {
   max-width: 1180px;
   margin: 0 auto;
@@ -2687,8 +2771,8 @@ async def render_full_html_package_async(
       </div>
 
       <section class="hireko-mid-cta">
-        <h2>Make your hiring workflow faster</h2>
-        <p>Hireko.ai helps teams organize candidates, simplify screening, and move qualified applicants through the hiring process more efficiently.</p>
+        <h2>Make hiring more intelligent</h2>
+        <p>Hireko.ai helps businesses find, evaluate, and hire the right talent with intelligent automation.</p>
         <a class="hireko-btn" href="#">Explore Hireko.ai</a>
       </section>
 
@@ -2699,6 +2783,25 @@ async def render_full_html_package_async(
           <p>Use this resource to align recruiters, hiring managers, scorecards, and AI-assisted screening before your next role opens.</p>
         </div>
         <a class="hireko-btn" href="#">Get the checklist</a>
+      </section>
+
+      <section class="hireko-author-card">
+        <div class="author-avatar" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" class="author-hireko-symbol"><path d="M12 9v9c0 8-4 13-11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M24 5v15c0 9-5 15-14 20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M36 9v9c0 8 4 13 11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M9 42c7-5 14-5 22 0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+        </div>
+        <div class="author-info">
+          <div class="author-header">
+            <span class="author-name">Hireko Research Team</span>
+            <span class="author-badge">Verified Author</span>
+          </div>
+          <div class="author-role">AI Talent Acquisition &amp; Workforce Intelligence</div>
+          <p class="author-bio">Analyzing real-world recruitment workflows, candidate matching accuracy, and structured AI interview frameworks to help modern talent teams hire smarter.</p>
+          <div class="author-social">
+            <a href="https://hireko.ai" target="_blank" rel="noopener">hireko.ai</a>
+            <a href="#" rel="noopener">LinkedIn</a>
+            <a href="#" rel="noopener">Twitter</a>
+          </div>
+        </div>
       </section>
 
       {sources_html}
@@ -2725,8 +2828,8 @@ async def render_full_html_package_async(
 
   <section class="hireko-final-cta">
     <div class="hireko-final-cta-inner">
-      <h2>Build a better hiring process with Hireko.ai</h2>
-      <a class="hireko-btn" href="#">Try Hireko.ai</a>
+      <h2>Build a smarter hiring process with Hireko.ai</h2>
+      <a class="hireko-btn" href="#">Get Started</a>
     </div>
   </section>
 </body>
