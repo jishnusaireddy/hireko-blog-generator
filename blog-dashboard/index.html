@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Blog Studio — Generate Publication-Ready Articles</title>
+    <meta name="description" content="Generate stunning, fact-checked blog articles with AI. Powered by a 3-iteration refinement pipeline." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      /* ================================================================
+         DESIGN SYSTEM — AI Blog Studio
+         Premium dark glassmorphism with animated gradient accents
+         ================================================================ */
+
+      :root {
+        --bg-deep: #07080d;
+        --bg-surface: rgba(15, 18, 30, 0.85);
+        --bg-card: rgba(20, 24, 42, 0.65);
+        --bg-input: rgba(30, 35, 58, 0.6);
+        --accent-1: #6366f1;
+        --accent-2: #8b5cf6;
+        --accent-3: #06b6d4;
+        --accent-glow: rgba(99, 102, 241, 0.25);
+        --gradient-main: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+        --gradient-hover: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #22d3ee 100%);
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border-subtle: rgba(148, 163, 184, 0.12);
+        --border-glow: rgba(99, 102, 241, 0.3);
+        --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+        --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+        --radius-sm: 8px;
+        --radius-md: 14px;
+        --radius-lg: 20px;
+        --radius-xl: 28px;
+        --shadow-card: 0 25px 60px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(148, 163, 184, 0.06);
+        --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15), 0 0 80px rgba(139, 92, 246, 0.08);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Animated Background */
+      @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        33% { transform: translateY(-12px) rotate(1deg); }
+        66% { transform: translateY(6px) rotate(-1deg); }
+      }
+
+      @keyframes pulseGlow {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 0.8; }
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @keyframes progressPulse {
+        0%, 100% { opacity: 0.6; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.05); }
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 1rem;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* Ambient Gradient Orbs */
+      body::before,
+      body::after {
+        content: '';
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      body::before {
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        top: -200px;
+        right: -100px;
+        animation: float 20s ease-in-out infinite;
+      }
+
+      body::after {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+        bottom: -150px;
+        left: -100px;
+        animation: float 25s ease-in-out infinite reverse;
+      }
+
+      /* ---- Top Navigation Bar ---- */
+      .top-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(7, 8, 13, 0.75);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none;
+      }
+
+      .nav-logo {
+        width: 32px;
+        height: 32px;
+        background: var(--gradient-main);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: white;
+      }
+
+      .nav-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nav-link {
+        padding: 0.45rem 0.9rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: var(--transition);
+        border: 1px solid transparent;
+      }
+
+      .nav-link:hover {
+        color: var(--text-primary);
+        background: rgba(99, 102, 241, 0.08);
+        border-color: var(--border-subtle);
+      }
+
+      .nav-link.active {
+        color: var(--accent-1);
+        background: rgba(99, 102, 241, 0.1);
+        border-color: var(--border-glow);
+      }
+
+      .nav-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        background: rgba(34, 197, 94, 0.12);
+        color: #4ade80;
+        border: 1px solid rgba(34, 197, 94, 0.2);
+      }
+
+      .nav-badge::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #4ade80;
+        animation: pulseGlow 2s ease-in-out infinite;
+      }
+
+      /* ---- Hero Section ---- */
+      .hero-section {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        margin-top: 3.5rem;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 1rem;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: rgba(99, 102, 241, 0.1);
+        color: var(--accent-1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        margin-bottom: 1.25rem;
+      }
+
+      .hero-title {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+        margin-bottom: 0.75rem;
+        background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 50%, #f1f5f9 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 6s linear infinite;
+      }
+
+      .hero-subtitle {
+        font-size: 1.05rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        max-width: 520px;
+        margin: 0 auto;
+      }
+
+      /* ---- Pipeline Steps ---- */
+      .pipeline-steps {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .pipeline-step {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        backdrop-filter: blur(12px);
+        color: var(--text-secondary);
+        transition: var(--transition);
+      }
+
+      .pipeline-step .step-num {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--gradient-main);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.65rem;
+        font-weight: 800;
+      }
+
+      .pipeline-connector {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+      }
+
+      /* ---- Main Form Card ---- */
+      .form-card {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 580px;
+        background: var(--bg-card);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-xl);
+        padding: 2.5rem 2rem;
+        box-shadow: var(--shadow-card);
+        animation: fadeInUp 0.8s ease-out 0.15s both;
+      }
+
+      /* Gradient border glow effect */
+      .form-card::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border-radius: calc(var(--radius-xl) + 1px);
+        background: var(--gradient-main);
+        opacity: 0;
+        z-index: -1;
+        transition: opacity 0.5s ease;
+      }
+
+      .form-card:hover::before {
+        opacity: 0.15;
+      }
+
+      .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .form-header h1 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.45rem;
+        background: var(--gradient-main);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .form-header p {
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+        line-height: 1.55;
+      }
+
+      /* ---- Form Fields ---- */
+      .field-group {
+        margin-bottom: 1.35rem;
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.45rem;
+        letter-spacing: 0.02em;
+      }
+
+      label .req {
+        color: #f87171;
+        font-size: 0.75rem;
+      }
+
+      label .field-icon {
+        font-size: 0.9rem;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        background: var(--bg-input);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        font-size: 0.92rem;
+        font-family: inherit;
+        color: var(--text-primary);
+        outline: none;
+        transition: var(--transition);
+        -webkit-appearance: none;
+      }
+
+      input[type="text"]::placeholder {
+        color: var(--text-muted);
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      select:focus {
+        border-color: var(--accent-1);
+        box-shadow: 0 0 0 3px var(--accent-glow), 0 0 20px rgba(99, 102, 241, 0.1);
+        background: rgba(30, 35, 58, 0.8);
+      }
+
+      select {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        padding-right: 2.5rem;
+      }
+
+      select option {
+        background: #1e293b;
+        color: var(--text-primary);
+        padding: 0.5rem;
+      }
+
+      /* ---- Template Selector Pills ---- */
+      .template-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 0.5rem;
+      }
+
+      .template-pill {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0.65rem 0.5rem;
+        border-radius: var(--radius-md);
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        background: var(--bg-input);
+        border: 1px solid var(--border-subtle);
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+      }
+
+      .template-pill:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        color: var(--text-primary);
+        background: rgba(99, 102, 241, 0.08);
+      }
+
+      .template-pill.active {
+        border-color: var(--accent-1);
+        color: var(--text-primary);
+        background: rgba(99, 102, 241, 0.12);
+        box-shadow: 0 0 0 2px var(--accent-glow);
+      }
+
+      .template-pill .pill-icon {
+        font-size: 1rem;
+      }
+
+      .template-pill input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* ---- Submit Button ---- */
+      .submit-btn {
+        width: 100%;
+        padding: 0.95rem;
+        background: var(--gradient-main);
+        background-size: 200% auto;
+        color: #ffffff;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 1.25rem;
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.01em;
+      }
+
+      .submit-btn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--gradient-hover);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .submit-btn:hover::before {
+        opacity: 1;
+      }
+
+      .submit-btn:hover {
+        box-shadow: 0 8px 30px rgba(99, 102, 241, 0.35), 0 0 60px rgba(99, 102, 241, 0.15);
+        transform: translateY(-1px);
+      }
+
+      .submit-btn:active {
+        transform: translateY(0);
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .submit-btn span {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      /* ---- Footer ---- */
+      .footer-tag {
+        text-align: center;
+        margin-top: 1.75rem;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .footer-tag a {
+        color: var(--accent-1);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+
+      .footer-tag a:hover {
+        color: var(--accent-2);
+      }
+
+      /* ---- Bottom Links ---- */
+      .bottom-links {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        animation: fadeInUp 0.8s ease-out 0.3s both;
+      }
+
+      .bottom-link {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: var(--transition);
+        padding: 0.4rem 0.8rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid transparent;
+      }
+
+      .bottom-link:hover {
+        color: var(--text-primary);
+        border-color: var(--border-subtle);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      /* ---- Status Modal Overlay ---- */
+      #status-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(7, 8, 13, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+      }
+
+      .status-box {
+        background: var(--bg-surface);
+        backdrop-filter: blur(24px);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-xl);
+        max-width: 480px;
+        width: 100%;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-card), var(--shadow-glow);
+        animation: fadeInUp 0.4s ease-out;
+      }
+
+      .spinner-container {
+        position: relative;
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 1.5rem auto;
+      }
+
+      .spinner {
+        width: 64px;
+        height: 64px;
+        border: 3px solid rgba(99, 102, 241, 0.15);
+        border-top: 3px solid var(--accent-1);
+        border-right: 3px solid var(--accent-2);
+        border-radius: 50%;
+        animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      .spinner-inner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.3rem;
+      }
+
+      .modal-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+      }
+
+      .modal-text {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Progress steps in modal */
+      .progress-steps {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+
+      .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        transition: var(--transition);
+      }
+
+      .progress-step.active {
+        color: var(--accent-1);
+        animation: progressPulse 2s ease-in-out infinite;
+      }
+
+      .progress-step.done {
+        color: #4ade80;
+      }
+
+      .progress-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        border: 2px solid var(--border-subtle);
+        background: var(--bg-card);
+        transition: var(--transition);
+      }
+
+      .progress-step.active .progress-dot {
+        border-color: var(--accent-1);
+        background: rgba(99, 102, 241, 0.15);
+        box-shadow: 0 0 12px var(--accent-glow);
+      }
+
+      .progress-step.done .progress-dot {
+        border-color: #4ade80;
+        background: rgba(34, 197, 94, 0.15);
+      }
+
+      .result-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+      }
+
+      .btn-view {
+        flex: 1;
+        padding: 0.8rem;
+        background: var(--gradient-main);
+        color: white;
+        text-decoration: none;
+        border-radius: var(--radius-md);
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-align: center;
+        transition: var(--transition);
+      }
+
+      .btn-view:hover {
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .btn-close {
+        padding: 0.8rem 1.25rem;
+        background: var(--bg-input);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .btn-close:hover {
+        background: rgba(99, 102, 241, 0.08);
+        color: var(--text-primary);
+        border-color: var(--border-glow);
+      }
+
+      /* ---- Success state ---- */
+      .success-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 1.5rem auto;
+        border-radius: 50%;
+        background: rgba(34, 197, 94, 0.12);
+        border: 2px solid rgba(34, 197, 94, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+      }
+
+      .result-stats {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .result-stat {
+        text-align: center;
+      }
+
+      .result-stat-value {
+        font-size: 1.4rem;
+        font-weight: 800;
+        background: var(--gradient-main);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .result-stat-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-muted);
+        margin-top: 0.1rem;
+      }
+
+      /* ---- Responsive ---- */
+      @media (max-width: 640px) {
+        body {
+          padding: 1rem 0.75rem;
+        }
+
+        .top-nav {
+          padding: 0.75rem 1rem;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .form-card {
+          padding: 2rem 1.5rem;
+          border-radius: var(--radius-lg);
+        }
+
+        .hero-section {
+          margin-top: 4rem;
+        }
+
+        .pipeline-steps {
+          gap: 0.35rem;
+        }
+
+        .pipeline-connector {
+          display: none;
+        }
+
+        .template-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .bottom-links {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+      <a href="#" class="nav-brand">
+        <div class="nav-logo">AI</div>
+        <span class="nav-title">Blog Studio</span>
+      </a>
+      <div class="nav-links">
+        <a href="/docs" class="nav-link" target="_blank">📄 API Docs</a>
+        <a href="/api/health" class="nav-link" target="_blank">🔍 Health</a>
+        <span class="nav-badge">Server Online</span>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <span class="hero-eyebrow">⚡ AI-Powered Content Engine</span>
+      <h1 class="hero-title">Blog Studio</h1>
+      <p class="hero-subtitle">Generate publication-ready, fact-checked blog articles with a single click. Powered by a 3-iteration AI refinement pipeline.</p>
+
+      <div class="pipeline-steps">
+        <div class="pipeline-step">
+          <span class="step-num">1</span>
+            Deep Research
+        </div>
+        <span class="pipeline-connector">→</span>
+        <div class="pipeline-step">
+          <span class="step-num">2</span>
+            Fact-Check Audit
+        </div>
+        <span class="pipeline-connector">→</span>
+        <div class="pipeline-step">
+          <span class="step-num">3</span>
+            HTML Rendering
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Form Card -->
+    <main class="form-card">
+      <header class="form-header">
+        <h1>Generate Article</h1>
+        <p>Configure your blog parameters below and let AI handle the rest.</p>
+      </header>
+
+      <form id="generator-form">
+        <div class="field-group">
+          <label for="topic">
+            <span class="field-icon">📝</span>
+            Topic
+            <span class="req">*</span>
+          </label>
+          <input id="topic" name="topic" type="text" placeholder="e.g. What Is an AI Interview Platform?" required value="What Is an AI Interview Platform? Complete Guide for Enterprises in 2026" />
+        </div>
+
+        <div class="field-group">
+          <label for="audience">
+            <span class="field-icon">👥</span>
+            Audience Segment
+            <span class="req">*</span>
+          </label>
+          <input id="audience" name="audience_segment" type="text" placeholder="e.g. HR Directors, Talent Acquisition Leaders" required value="HR Directors, Talent Acquisition Leaders, CHROs, and Recruiters" />
+        </div>
+
+        <div class="field-group">
+          <label for="goal">
+            <span class="field-icon">🎯</span>
+            Goal
+            <span class="req">*</span>
+          </label>
+          <input id="goal" name="goal" type="text" placeholder="e.g. Educate and convert HR teams" required value="Educate HR teams on AI interviews while positioning Hireko.ai as a modern, intelligent hiring platform" />
+        </div>
+
+        <div class="field-group">
+          <label for="rough_word_target">
+            <span class="field-icon">📊</span>
+            Word Target
+            <span class="req">*</span>
+          </label>
+          <input id="rough_word_target" name="rough_word_target" type="number" min="200" max="5000" required value="800" />
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span class="field-icon">🎨</span>
+            Blog Template
+            <span class="req">*</span>
+          </label>
+          <div class="template-grid" id="template-grid">
+            <label class="template-pill active">
+              <input type="radio" name="template" value="Hireko Editorial" checked />
+              <span class="pill-icon">H!</span> Hireko
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn" class="submit-btn">
+          <span>🚀 Generate Article</span>
+        </button>
+      </form>
+
+      <div class="footer-tag">
+        Powered by <a href="/docs" target="_blank">FastAPI</a> &bull; Pydantic AI Harness
+      </div>
+    </main>
+
+    <!-- Quick Links -->
+    <div class="bottom-links">
+      <a href="/docs" target="_blank" class="bottom-link">📄 Swagger Docs</a>
+      <a href="/redoc" target="_blank" class="bottom-link">📘 ReDoc</a>
+      <a href="/api/blogs" target="_blank" class="bottom-link">📂 All Blogs</a>
+      <a href="/api/health" target="_blank" class="bottom-link">💚 Health</a>
+    </div>
+
+    <!-- Status Overlay Modal -->
+    <div id="status-overlay">
+      <div class="status-box">
+        <div id="modal-spinner-wrap" class="spinner-container">
+          <div class="spinner"></div>
+          <div class="spinner-inner">✍️</div>
+        </div>
+
+        <div id="modal-success-icon" class="success-icon" style="display:none;">✅</div>
+
+        <h2 id="modal-title" class="modal-title">Generating Article...</h2>
+        <p id="modal-text" class="modal-text">Running 3-iteration AI pipeline</p>
+
+        <div id="modal-progress" class="progress-steps">
+          <div class="progress-step active" id="step-1">
+            <div class="progress-dot">1</div>
+            Research
+          </div>
+          <div class="progress-step" id="step-2">
+            <div class="progress-dot">2</div>
+            Audit
+          </div>
+          <div class="progress-step" id="step-3">
+            <div class="progress-dot">3</div>
+            Render
+          </div>
+        </div>
+
+        <div id="modal-result-stats" class="result-stats" style="display:none;"></div>
+
+        <div id="modal-actions" class="result-actions" style="display: none;">
+          <a id="view-link" href="#" target="_blank" class="btn-view">🔗 Open Generated Blog</a>
+          <button id="close-modal-btn" class="btn-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ---- Template Pill Selection ----
+      const templateGrid = document.getElementById('template-grid');
+      templateGrid.addEventListener('change', function(e) {
+        if (e.target.type === 'radio') {
+          templateGrid.querySelectorAll('.template-pill').forEach(pill => pill.classList.remove('active'));
+          e.target.closest('.template-pill').classList.add('active');
+        }
+      });
+
+      // ---- Form Submission ----
+      const form = document.getElementById('generator-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const overlay = document.getElementById('status-overlay');
+      const spinnerWrap = document.getElementById('modal-spinner-wrap');
+      const successIcon = document.getElementById('modal-success-icon');
+      const modalTitle = document.getElementById('modal-title');
+      const modalText = document.getElementById('modal-text');
+      const modalProgress = document.getElementById('modal-progress');
+      const modalResultStats = document.getElementById('modal-result-stats');
+      const modalActions = document.getElementById('modal-actions');
+      const viewLink = document.getElementById('view-link');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+
+      closeModalBtn.addEventListener('click', () => {
+        overlay.style.display = 'none';
+      });
+
+      let generatedBlogUrl = '';
+      function releaseGeneratedBlogUrl() {
+        if (generatedBlogUrl) {
+          URL.revokeObjectURL(generatedBlogUrl);
+          generatedBlogUrl = '';
+        }
+      }
+
+      // Simulate progress steps
+      function animateProgress(step) {
+        for (let i = 1; i <= 3; i++) {
+          const el = document.getElementById('step-' + i);
+          el.classList.remove('active', 'done');
+          if (i < step) el.classList.add('done');
+          else if (i === step) el.classList.add('active');
+        }
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const selectedTemplate = templateGrid.querySelector('input[name="template"]:checked');
+
+        const payload = {
+          topic: document.getElementById('topic').value,
+          audience_segment: document.getElementById('audience').value,
+          goal: document.getElementById('goal').value,
+          rough_word_target: parseInt(document.getElementById('rough_word_target').value),
+          template: selectedTemplate ? selectedTemplate.value : 'Hireko Editorial',
+          name: 'article'
+        };
+
+        // Show modal — loading state
+        overlay.style.display = 'flex';
+        spinnerWrap.style.display = 'block';
+        successIcon.style.display = 'none';
+        modalProgress.style.display = 'flex';
+        modalResultStats.style.display = 'none';
+        modalActions.style.display = 'none';
+        modalTitle.textContent = 'Generating Article...';
+        modalText.textContent = 'Deep researching your topic with live evidence gathering';
+        animateProgress(1);
+
+        // Simulate step transitions
+        const stepTimers = [];
+        stepTimers.push(setTimeout(() => {
+          modalText.textContent = 'Fact-checking claims and auditing content quality';
+          animateProgress(2);
+        }, 8000));
+
+        stepTimers.push(setTimeout(() => {
+          modalText.textContent = 'Rendering HTML5 package with editorial visuals';
+          animateProgress(3);
+        }, 18000));
+
+        try {
+          const res = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          stepTimers.forEach(clearTimeout);
+          const data = await res.json();
+
+          if (data.success) {
+            // Success state
+            spinnerWrap.style.display = 'none';
+            successIcon.style.display = 'flex';
+            modalProgress.style.display = 'none';
+
+            modalTitle.textContent = 'Article Generated!';
+            modalText.textContent = 'Your publication-ready blog is ready to view';
+
+            // Show stats
+            modalResultStats.innerHTML = `
+              <div class="result-stat">
+                <div class="result-stat-value">${data.word_count || '—'}</div>
+                <div class="result-stat-label">Words</div>
+              </div>
+              <div class="result-stat">
+                <div class="result-stat-value">${data.iterations || 3}</div>
+                <div class="result-stat-label">Iterations</div>
+              </div>
+              <div class="result-stat">
+                <div class="result-stat-value">${data.duration_seconds ? data.duration_seconds + 's' : '—'}</div>
+                <div class="result-stat-label">Duration</div>
+              </div>
+            `;
+            modalResultStats.style.display = 'flex';
+
+            releaseGeneratedBlogUrl();
+            if (data.article_html) {
+              generatedBlogUrl = URL.createObjectURL(new Blob([data.article_html], { type: 'text/html' }));
+              viewLink.href = generatedBlogUrl;
+            } else {
+              viewLink.href = data.index_url || '/output/article/index.html';
+            }
+            viewLink.style.display = '';
+            modalActions.style.display = 'flex';
+          } else {
+            // Error from API
+            spinnerWrap.style.display = 'none';
+            successIcon.style.display = 'none';
+            modalProgress.style.display = 'none';
+            modalTitle.textContent = 'Generation Error';
+            modalText.textContent = data.detail || data.error || 'Failed to generate blog article.';
+            modalActions.style.display = 'flex';
+            viewLink.style.display = 'none';
+          }
+        } catch (err) {
+          stepTimers.forEach(clearTimeout);
+          spinnerWrap.style.display = 'none';
+          successIcon.style.display = 'none';
+          modalProgress.style.display = 'none';
+          modalTitle.textContent = 'Connection Failed';
+          modalText.textContent = 'Could not connect to the server. Make sure it\'s running on localhost:8000';
+          modalActions.style.display = 'flex';
+          viewLink.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>

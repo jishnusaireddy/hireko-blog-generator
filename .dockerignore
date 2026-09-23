@@ -1,0 +1,12 @@
+.env
+.env.*
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+output
+template_preview
+tmp
+node_modules
+*.log

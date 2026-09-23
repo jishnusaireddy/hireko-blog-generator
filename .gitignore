@@ -1,0 +1,22 @@
+# Secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated output
+output/
+tmp/
+template_preview/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
