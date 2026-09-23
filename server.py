@@ -17,6 +17,7 @@ import os
 import sys
 import io
 import time
+import tempfile
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
@@ -53,7 +54,20 @@ from blog_agent import (
 PORT = int(os.getenv("PORT", "8000"))
 WORKSPACE_DIR = os.path.dirname(os.path.abspath(__file__))
 DASHBOARD_DIR = os.path.join(WORKSPACE_DIR, "blog-dashboard")
-DEFAULT_OUTPUT_DIR = os.path.join(WORKSPACE_DIR, "output")
+
+
+def get_default_output_dir() -> str:
+    """Return a writable output directory, falling back to /tmp on Vercel or read-only filesystems."""
+    if os.getenv("VERCEL") or not os.access(WORKSPACE_DIR, os.W_OK):
+        tmp_dir = os.path.join(tempfile.gettempdir(), "hireko_output")
+        os.makedirs(tmp_dir, exist_ok=True)
+        return tmp_dir
+    default_dir = os.path.join(WORKSPACE_DIR, "output")
+    os.makedirs(default_dir, exist_ok=True)
+    return default_dir
+
+
+DEFAULT_OUTPUT_DIR = get_default_output_dir()
 
 TEMPLATE_CHOICES = [
     "Hireko Editorial",
@@ -379,10 +393,12 @@ async def view_article(name: str):
     if name in LATEST_GENERATED_HTML:
         return HTMLResponse(content=LATEST_GENERATED_HTML[name], media_type="text/html; charset=utf-8")
 
-    article_path = os.path.join(DEFAULT_OUTPUT_DIR, name, "index.html")
-    if os.path.isfile(article_path):
-        with open(article_path, "r", encoding="utf-8") as f:
-            return HTMLResponse(content=f.read(), media_type="text/html; charset=utf-8")
+    candidate_dirs = [DEFAULT_OUTPUT_DIR, os.path.join(tempfile.gettempdir(), "hireko_output")]
+    for out_dir in candidate_dirs:
+        article_path = os.path.join(out_dir, name, "index.html")
+        if os.path.isfile(article_path):
+            with open(article_path, "r", encoding="utf-8") as f:
+                return HTMLResponse(content=f.read(), media_type="text/html; charset=utf-8")
 
     if "latest" in LATEST_GENERATED_HTML:
         return HTMLResponse(content=LATEST_GENERATED_HTML["latest"], media_type="text/html; charset=utf-8")

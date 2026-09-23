@@ -825,7 +825,7 @@ blockquote {
 
     if template_name in ("Hireko Editorial", "Hireko Vercel Editorial"):
         return """
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
 
 :root {
   --hireko-navy: #0F172A;
@@ -837,7 +837,7 @@ blockquote {
   --hireko-soft-blue: #EEF9FD;
   --hireko-text: #0F172A;
   --hireko-muted: #5C6B7A;
-  --hireko-border: #D9E7EA;
+  --hireko-border: #E2E8F0;
   --hireko-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
 }
 
@@ -860,52 +860,57 @@ body {
   color: var(--hireko-text);
   font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.7;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* Header */
 .hireko-nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.98);
+  background: #ffffff;
   border-bottom: 1px solid var(--hireko-border);
 }
 
 .hireko-nav-inner {
-  max-width: 1180px;
+  max-width: 1240px;
   margin: 0 auto;
-  min-height: 68px;
-  padding: 0.7rem 1.25rem;
+  min-height: 70px;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .hireko-logo {
   display: inline-flex;
   align-items: center;
-  min-width: 164px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .hireko-logo-lockup {
   display: block;
-  width: 151px;
+  width: 160px;
   height: auto;
+  max-width: 100%;
 }
 
 .hireko-nav-links {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1.75rem;
   font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.92rem;
+  font-weight: 500;
 }
 
 .hireko-nav-links a {
   color: var(--hireko-navy);
   text-decoration: none;
+  transition: color 150ms ease;
 }
 
 .hireko-nav-links a:hover,
@@ -916,14 +921,16 @@ body {
 .hireko-nav-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .hireko-login {
   color: var(--hireko-navy);
   font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
+  padding: 0.5rem 0.75rem;
 }
 
 .hireko-btn {
@@ -931,45 +938,59 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 42px;
-  padding: 0.75rem 1.05rem;
+  padding: 0.65rem 1.25rem;
   border: 0;
   border-radius: 8px;
   background: var(--hireko-gradient);
   color: #ffffff;
   font-family: 'Poppins', sans-serif;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 8px 20px rgba(0, 161, 212, 0.20);
+  box-shadow: 0 4px 14px rgba(0, 161, 212, 0.25);
   transition: transform 160ms ease, box-shadow 160ms ease;
+  cursor: pointer;
 }
 
 .hireko-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 11px 24px rgba(0, 161, 212, 0.26);
+  box-shadow: 0 8px 20px rgba(0, 161, 212, 0.35);
 }
 
 .hireko-btn:focus-visible,
 .hireko-nav a:focus-visible,
 .hireko-toc a:focus-visible,
 .hireko-article a:focus-visible {
-  outline: 3px solid rgba(0, 161, 212, 0.34);
-  outline-offset: 3px;
+  outline: 3px solid rgba(0, 161, 212, 0.35);
+  outline-offset: 2px;
 }
 
+/* Breadcrumbs */
 .hireko-breadcrumb {
-  max-width: 1180px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0.9rem 1.25rem;
-  color: var(--hireko-muted);
-  font-size: 0.92rem;
+  padding: 1rem 1.5rem;
+  color: #64748B;
+  font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
 }
 
 .hireko-breadcrumb a {
   color: var(--hireko-navy);
   text-decoration: none;
+  font-weight: 500;
 }
 
+.hireko-breadcrumb a:hover {
+  color: var(--hireko-cerulean);
+}
+
+.hireko-breadcrumb .active-category {
+  color: var(--hireko-cerulean);
+  font-weight: 600;
+}
+
+/* Hero Section */
 .hireko-hero {
   position: relative;
   overflow: hidden;
@@ -977,31 +998,16 @@ body {
   color: #ffffff;
 }
 
-.hireko-hero::after,
-.hireko-insight::after,
-.hireko-final-cta::after {
-  content: "";
-  position: absolute;
-  right: -5rem;
-  bottom: -8rem;
-  width: 26rem;
-  height: 26rem;
-  opacity: 0.13;
-  background: var(--hireko-gradient);
-  clip-path: polygon(48% 0, 55% 0, 55% 48%, 100% 74%, 100% 87%, 50% 58%, 0 87%, 0 74%, 45% 48%, 45% 0);
-  pointer-events: none;
-}
-
 .hireko-hero-inner {
   position: relative;
   z-index: 1;
-  max-width: 1040px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 3.7rem 1.25rem 2.3rem;
+  padding: 4rem 1.5rem 3rem;
 }
 
 .hireko-hero-copy {
-  max-width: 780px;
+  max-width: 820px;
   margin: 0 auto;
   text-align: center;
 }
@@ -1012,19 +1018,19 @@ body {
   color: var(--hireko-cerulean);
   font-family: 'Poppins', sans-serif;
   font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .hireko-hero h1 {
-  max-width: 760px;
-  margin: 0 0 1.15rem;
+  max-width: 820px;
+  margin: 0 0 1.25rem;
   font-family: 'Poppins', sans-serif;
-  font-size: 3.55rem;
-  line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: 0;
+  font-size: 3.25rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .gradient-text {
@@ -1035,19 +1041,25 @@ body {
 }
 
 .hireko-hero-dek {
-  max-width: 660px;
-  margin: 0 auto 1.6rem;
-  color: #D6E3E8;
-  font-size: 1.12rem;
+  max-width: 700px;
+  margin: 0 auto 1.75rem;
+  color: #94A3B8;
+  font-size: 1.15rem;
+  line-height: 1.6;
 }
 
 .hireko-meta {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 0.8rem 1.1rem;
-  color: #c8d4dc;
-  font-size: 0.95rem;
+  gap: 0.75rem 1.25rem;
+  color: #94A3B8;
+  font-size: 0.92rem;
+}
+
+.hireko-meta strong {
+  color: #FFFFFF;
 }
 
 .hireko-meta span + span::before {
@@ -1055,45 +1067,240 @@ body {
   display: inline-block;
   width: 4px;
   height: 4px;
-  margin: 0 0.75rem 0.18rem 0;
+  margin: 0 0.85rem 0.15rem 0;
   border-radius: 50%;
   background: var(--hireko-green);
 }
 
-.hireko-hero-visual {
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 8px;
+/* Dashboard Visual */
+.hireko-dashboard-visual {
+  padding: 0.85rem;
+  border: 1px solid rgba(111, 202, 159, 0.34);
+  border-radius: 10px;
+  background: linear-gradient(145deg, rgba(0, 161, 212, 0.20), rgba(111, 202, 159, 0.05)), var(--hireko-navy);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+}
+
+.hero-dashboard {
+  margin-top: 2.75rem;
+}
+
+.visual-window {
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.22);
-}
-
-.hireko-hero-visual img {
-  width: 100%;
-  height: 380px;
-  object-fit: cover;
-  display: block;
-  opacity: 0.88;
-}
-
-.hireko-visual-panel {
-  position: absolute;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  padding: 1rem;
   border-radius: 8px;
-  background: rgba(15, 23, 42, 0.86);
-  border: 1px solid rgba(111, 202, 159, 0.28);
+  background: #12243E;
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
-.hireko-score-row {
+.visual-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1.15rem;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.visual-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #BFECDD;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.visual-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--hireko-green);
+  box-shadow: 0 0 0 4px rgba(111, 202, 159, 0.15);
+}
+
+.visual-body {
+  padding: 1.15rem;
+  display: grid;
+  grid-template-columns: minmax(210px, 0.8fr) minmax(300px, 1.2fr) minmax(180px, 0.6fr);
+  gap: 1rem;
+  align-items: stretch;
+  color: #ffffff;
+}
+
+.candidate-card {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.95rem;
+  border: 1px solid rgba(191, 236, 221, 0.20);
+  border-radius: 8px;
+  background: linear-gradient(105deg, rgba(0, 161, 212, 0.12), rgba(255, 255, 255, 0.03));
+}
+
+.candidate-avatar {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--hireko-gradient);
+  color: var(--hireko-navy);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.candidate-details span {
+  display: block;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.candidate-details small {
+  display: block;
+  margin-top: 0.15rem;
+  color: #94A3B8;
+  font-size: 0.72rem;
+}
+
+.candidate-score {
+  display: grid;
+  min-width: 44px;
+  min-height: 44px;
+  place-items: center;
+  border: 1px solid rgba(111, 202, 159, 0.35);
+  border-radius: 8px;
+  background: rgba(111, 202, 159, 0.12);
+  color: #BFECDD;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.visual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.visual-panel {
+  padding: 1rem;
+  border: 1px solid rgba(191, 236, 221, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.visual-panel strong {
+  display: block;
+  margin-bottom: 0.65rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  color: #ffffff;
+}
+
+.signal-row {
+  display: grid;
+  grid-template-columns: 1fr 1.25rem;
+  gap: 0.35rem 0.55rem;
+  align-items: center;
+  margin: 0.55rem 0;
+}
+
+.signal-row span {
+  color: #CBD5E1;
+  font-size: 0.7rem;
+}
+
+.signal-row em {
+  color: #BFECDD;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 700;
+  text-align: right;
+}
+
+.signal-bar {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.signal-bar span {
+  display: block;
+  height: 100%;
+  background: var(--hireko-gradient);
+}
+
+.interview-flow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.interview-flow span {
+  position: relative;
+  display: grid;
+  min-height: 48px;
+  place-items: center;
+  border: 1px solid rgba(191, 236, 221, 0.16);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #DDF7F0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.interview-flow span::after {
+  content: "";
+  position: absolute;
+  right: -0.35rem;
+  top: 50%;
+  width: 0.3rem;
+  height: 1px;
+  background: var(--hireko-green);
+}
+
+.interview-flow span:last-child::after {
+  display: none;
+}
+
+.match-summary {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 0.75rem;
+  gap: 0.5rem 1rem;
+  align-items: end;
+  padding: 0.95rem;
+  border: 1px solid rgba(191, 236, 221, 0.18);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.match-summary small {
+  display: block;
+  color: #94A3B8;
+  font-size: 0.72rem;
+}
+
+.match-summary strong {
   color: #ffffff;
-  font-size: 0.85rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
 }
 
 .hireko-score-bar {
@@ -1111,321 +1318,32 @@ body {
   background: var(--hireko-gradient);
 }
 
-.hireko-dashboard-visual {
-  padding: 0.8rem;
-  border: 1px solid rgba(111, 202, 159, 0.34);
-  border-radius: 8px;
-  background:
-    linear-gradient(145deg, rgba(0, 161, 212, 0.24), rgba(111, 202, 159, 0.06)),
-    var(--hireko-navy);
-  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.25);
-}
-
-.hero-dashboard {
-  margin-top: 2.7rem;
-  padding: 0.9rem;
-}
-
-.hero-dashboard .visual-body {
-  grid-template-columns: minmax(220px, 0.78fr) minmax(320px, 1.22fr) minmax(185px, 0.58fr);
-  align-items: stretch;
-  padding: 1.15rem;
-}
-
-.hero-dashboard .candidate-card,
-.hero-dashboard .match-summary {
-  min-height: 100%;
-}
-
-.hero-dashboard .candidate-card {
-  align-content: center;
-}
-
-.hero-dashboard .visual-grid {
-  grid-template-columns: 1fr 1fr;
-}
-
-.hero-dashboard .visual-panel {
-  min-height: 150px;
-}
-
-.hero-dashboard .match-summary {
-  align-content: center;
-}
-
-.visual-window {
-  overflow: hidden;
-  border-radius: 8px;
-  background: #12243E;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-}
-
-.visual-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
-  color: #ffffff;
-  background: rgba(15, 23, 42, 0.72);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0;
-}
-
-.visual-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: #BFECDD;
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-.visual-status::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--hireko-green);
-  box-shadow: 0 0 0 4px rgba(111, 202, 159, 0.12);
-}
-
-.visual-body {
-  padding: 1.05rem;
-  display: grid;
-  gap: 0.95rem;
-  color: #ffffff;
-}
-
-.visual-body .hireko-score-row {
-  color: #ffffff;
-}
-
-.visual-body .hireko-score-bar {
-  background: rgba(255, 255, 255, 0.16);
-}
-
-.candidate-card {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
-  gap: 0.75rem;
-  align-items: center;
-  padding: 0.9rem;
-  border: 1px solid rgba(191, 236, 221, 0.20);
-  border-radius: 8px;
-  background: linear-gradient(105deg, rgba(0, 161, 212, 0.13), rgba(255, 255, 255, 0.04));
-}
-
-.candidate-avatar {
-  display: grid;
-  width: 48px;
-  height: 48px;
-  place-items: center;
-  border-radius: 8px;
-  background: var(--hireko-gradient);
-  color: var(--hireko-navy);
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.candidate-details span {
-  display: block;
-  color: #ffffff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.candidate-details small {
-  display: block;
-  margin-top: 0.15rem;
-  color: #B8CCD7;
-  font-size: 0.69rem;
-}
-
-.candidate-score {
-  display: grid;
-  min-width: 48px;
-  min-height: 48px;
-  place-items: center;
-  border: 1px solid rgba(111, 202, 159, 0.34);
-  border-radius: 8px;
-  background: rgba(111, 202, 159, 0.11);
-  color: #BFECDD;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.visual-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.85rem;
-}
-
-.visual-panel {
-  min-height: 145px;
-  padding: 1rem;
-  border: 1px solid rgba(191, 236, 221, 0.16);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
-}
-
-.visual-panel strong {
-  display: block;
-  margin-bottom: 0.65rem;
-  font-family: 'Poppins', sans-serif;
-  color: #ffffff;
-  font-size: 0.8rem;
-}
-
-.signal-row {
-  display: grid;
-  grid-template-columns: 1fr 1.25rem;
-  gap: 0.35rem 0.55rem;
-  align-items: center;
-  margin: 0.62rem 0;
-}
-
-.signal-row span {
-  color: #C8D9E1;
-  font-size: 0.68rem;
-}
-
-.signal-row em {
-  color: #BFECDD;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.66rem;
-  font-style: normal;
-  font-weight: 700;
-  text-align: right;
-}
-
-.signal-bar {
-  grid-column: 1 / -1;
-  height: 8px;
-  margin: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  overflow: hidden;
-}
-
-.signal-bar span {
-  display: block;
-  height: 100%;
-  background: var(--hireko-gradient);
-}
-
-.interview-node {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
-  margin: 0;
-  padding: 0.36rem 0.48rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.10);
-  color: #DDF7F0;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.67rem;
-  font-weight: 700;
-}
-
-.interview-flow {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0.42rem;
-  align-items: center;
-  margin-top: 1.15rem;
-}
-
-.interview-flow span {
-  position: relative;
-  display: grid;
-  min-height: 53px;
-  place-items: center;
-  border: 1px solid rgba(191, 236, 221, 0.16);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #DDF7F0;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.64rem;
-  font-weight: 700;
-  text-align: center;
-}
-
-.interview-flow span::after {
-  content: "";
-  position: absolute;
-  right: -0.37rem;
-  top: 50%;
-  z-index: 1;
-  width: 0.32rem;
-  height: 1px;
-  background: var(--hireko-green);
-}
-
-.interview-flow span:last-child::after {
-  display: none;
-}
-
-.match-summary {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.55rem 1rem;
-  align-items: end;
-  padding: 0.85rem 0.95rem;
-  border: 1px solid rgba(191, 236, 221, 0.18);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.12);
-}
-
-.match-summary small {
-  display: block;
-  color: #B8CCD7;
-  font-size: 0.67rem;
-}
-
-.match-summary strong {
-  color: #ffffff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.87rem;
-}
-
-.match-summary .hireko-score-bar {
-  grid-column: 1 / -1;
-  height: 7px;
-}
-
+/* Main Layout & Two-Column Architecture */
 .hireko-layout {
-  max-width: 1180px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 4.5rem 1.25rem;
+  padding: 4.5rem 1.5rem;
   display: grid;
-  grid-template-columns: 208px minmax(0, 740px);
+  grid-template-columns: 240px minmax(0, 760px);
   gap: 4.5rem;
   align-items: start;
 }
 
 .hireko-toc {
   position: sticky;
-  top: 86px;
+  top: 96px;
   border-left: 2px solid var(--hireko-cerulean);
-  padding: 0.3rem 0 0.3rem 0.9rem;
+  padding: 0.3rem 0 0.3rem 1rem;
 }
 
 .hireko-toc h3 {
-  margin: 0 0 0.8rem;
+  margin: 0 0 0.9rem;
   font-family: 'Poppins', sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--hireko-navy);
+  font-weight: 700;
 }
 
 .hireko-toc ul {
@@ -1436,9 +1354,9 @@ body {
 
 .hireko-toc li {
   display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  gap: 0.1rem;
-  margin: 0 0 0.7rem;
+  grid-template-columns: 1.8rem minmax(0, 1fr);
+  gap: 0.2rem;
+  margin: 0 0 0.75rem;
   align-items: start;
 }
 
@@ -1451,10 +1369,10 @@ body {
 
 .hireko-toc a {
   color: var(--hireko-muted);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   line-height: 1.45;
-  overflow-wrap: anywhere;
   text-decoration: none;
+  transition: color 150ms ease;
 }
 
 .hireko-toc a:hover {
@@ -1462,76 +1380,110 @@ body {
 }
 
 .hireko-article {
-  max-width: 740px;
+  max-width: 760px;
 }
 
+/* Key Takeaway Card */
 .key-takeaway-card {
-  margin-bottom: 2rem;
-  padding: 1.35rem 1.45rem;
-  border-left: 5px solid var(--hireko-cerulean);
+  margin-bottom: 2.25rem;
+  padding: 1.4rem 1.6rem;
+  border-left: 4px solid var(--hireko-cerulean);
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--hireko-soft-blue), var(--hireko-soft));
+  background: var(--hireko-soft);
+  box-shadow: none;
 }
 
-.key-takeaway-card h2,
-.hireko-article h2,
-.hireko-article h3 {
+.key-takeaway-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.key-takeaway-header span {
   font-family: 'Poppins', sans-serif;
-  color: var(--hireko-navy);
-}
-
-.key-takeaway-card h2 {
-  margin: 0 0 0.4rem;
-  font-size: 1.15rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--hireko-cerulean);
+  text-transform: uppercase;
 }
 
 .key-takeaway-card p {
   margin: 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--hireko-navy);
+  font-weight: 500;
 }
 
-.hireko-article h2 {
-  margin: 3rem 0 1rem;
-  font-size: 2rem;
-  line-height: 1.22;
+/* Article Typography */
+.hireko-article h2,
+.content-body h2 {
+  margin: 3rem 0 1.15rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.15rem;
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--hireko-navy);
 }
 
-.hireko-article h3 {
-  margin: 2rem 0 0.6rem;
-  font-size: 1.28rem;
+.hireko-article h3,
+.content-body h3 {
+  margin: 2.25rem 0 0.75rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.35rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--hireko-navy);
 }
 
 .hireko-article p,
-.hireko-article li {
-  color: #344458;
-  font-size: 1.04rem;
+.hireko-article li,
+.content-body p,
+.content-body li {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.72;
 }
 
-.hireko-article a {
+.hireko-article a,
+.content-body a {
   color: var(--hireko-cerulean);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.hireko-article blockquote {
-  margin: 2.1rem 0;
-  padding: 1.3rem 1.45rem;
-  border-left: 5px solid var(--hireko-green);
+.hireko-article a:hover,
+.content-body a:hover {
+  color: var(--hireko-green);
+}
+
+.hireko-article blockquote,
+.content-body blockquote {
+  margin: 2.25rem 0;
+  padding: 1.35rem 1.6rem;
+  border-left: 4px solid var(--hireko-green);
   border-radius: 8px;
-  background: #f8fbfc;
+  background: var(--hireko-soft);
   color: var(--hireko-navy);
   font-size: 1.08rem;
   font-style: normal;
 }
 
+/* Section Images */
 .section-image-card {
-  margin: 2rem 0;
+  margin: 2.25rem 0;
   border: 1px solid var(--hireko-border);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   box-shadow: var(--hireko-shadow);
 }
 
 .section-image-card img {
   width: 100%;
-  height: 320px;
+  height: 340px;
   object-fit: cover;
   display: block;
 }
@@ -1541,92 +1493,176 @@ body {
   display: none;
 }
 
-.hireko-insight,
-.hireko-mid-cta,
-.related-card {
-  border-radius: 8px;
-}
-
+/* Hireko Insight Card */
 .hireko-insight {
   position: relative;
   overflow: hidden;
-  margin: 2rem 0;
-  padding: 1.7rem;
+  margin: 2.5rem 0;
+  padding: 1.8rem 2rem;
   background: var(--hireko-navy);
+  border-radius: 10px;
   color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hireko-insight-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .hireko-insight h3 {
-  margin-top: 0;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: #ffffff;
 }
 
-.hireko-insight p,
-.hireko-insight li {
-  color: #e4edf2;
+.hireko-insight p {
+  margin: 0;
+  color: #D6E3E8;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.02rem;
+  line-height: 1.65;
 }
 
 .hireko-icon {
-  width: 42px;
-  height: 42px;
-  margin-bottom: 0.85rem;
+  width: 32px;
+  height: 32px;
   color: var(--hireko-cerulean);
+  flex-shrink: 0;
 }
 
-.hireko-checklist,
-.hireko-compare,
-.hireko-workflow {
-  margin: 2rem 0;
-  border: 1px solid var(--hireko-border);
-  border-radius: 8px;
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
-}
-
+/* Checklist Card */
 .hireko-checklist {
-  padding: 1.35rem 1.45rem;
+  margin: 2.25rem 0;
+  padding: 1.5rem 1.8rem;
+  border: 1px solid var(--hireko-border);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
 }
 
-.hireko-checklist h3,
-.hireko-workflow h3 {
-  margin-top: 0;
-}
-
-.hireko-checklist ul {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.7rem 1.2rem;
-  padding-left: 1.1rem;
-}
-
-.hireko-compare {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.hireko-compare th,
-.hireko-compare td {
-  padding: 1rem;
-  border-bottom: 1px solid var(--hireko-border);
-  text-align: left;
-  vertical-align: top;
-}
-
-.hireko-compare th {
-  background: var(--hireko-navy);
-  color: #ffffff;
+.hireko-checklist h3 {
+  margin: 0 0 1rem;
   font-family: 'Poppins', sans-serif;
-}
-
-.hireko-compare td:first-child {
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--hireko-navy);
 }
 
+.hireko-checklist ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.85rem 1.25rem;
+}
+
+.hireko-checklist li {
+  position: relative;
+  padding-left: 2rem;
+  font-size: 0.98rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.hireko-checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--hireko-cerulean);
+  border-radius: 4px;
+  background: rgba(0, 161, 212, 0.06);
+}
+
+.hireko-checklist li::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 4px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--hireko-cerulean);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Comparison Tables */
+.hireko-compare,
+.hireko-article table,
+.content-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  border: 1px solid var(--hireko-border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+.hireko-compare th,
+.hireko-article table th,
+.content-body table th {
+  background: var(--hireko-navy);
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  padding: 0.9rem 1.15rem;
+  text-align: left;
+  border-bottom: 2px solid var(--hireko-cerulean);
+}
+
+.hireko-compare td,
+.hireko-article table td,
+.content-body table td {
+  padding: 0.85rem 1.15rem;
+  border-bottom: 1px solid var(--hireko-border);
+  color: #334155;
+  vertical-align: top;
+}
+
+.hireko-compare tr:nth-child(even) td,
+.hireko-article table tr:nth-child(even) td,
+.content-body table tr:nth-child(even) td {
+  background: #F8FAFC;
+}
+
+.hireko-compare tr:hover td,
+.hireko-article table tr:hover td,
+.content-body table tr:hover td {
+  background: #F0FBF6;
+}
+
+.hireko-compare td:first-child,
+.hireko-article table td:first-child,
+.content-body table td:first-child {
+  font-weight: 600;
+  color: var(--hireko-navy);
+}
+
+/* Workflow Diagram */
 .hireko-workflow {
-  padding: 1.45rem;
+  margin: 2.25rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--hireko-border);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.hireko-workflow h3 {
+  margin: 0 0 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--hireko-navy);
 }
 
 .workflow-steps {
@@ -1653,57 +1689,63 @@ body {
   color: var(--hireko-orchid);
   font-family: 'Poppins', sans-serif;
   font-weight: 800;
+  font-size: 0.85rem;
 }
 
 .workflow-step strong {
   display: block;
   margin: 0.25rem 0;
   font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  color: var(--hireko-navy);
 }
 
 .workflow-step p {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #475569;
 }
 
+/* Mid-Article Product CTA */
 .hireko-mid-cta {
   margin: 3rem 0;
   position: relative;
   overflow: hidden;
-  padding: 2.15rem;
-  background: linear-gradient(135deg, #eefaff, #eefbf8);
+  padding: 2.25rem 2.5rem;
+  background: linear-gradient(135deg, #EEF9FD 0%, #F0FBF6 100%);
   border: 1px solid var(--hireko-border);
+  border-radius: 10px;
 }
 
-.hireko-mid-cta::after {
-  content: "";
-  position: absolute;
-  right: 1.4rem;
-  top: 1.2rem;
-  width: 2.7rem;
-  height: 2.7rem;
-  opacity: 0.15;
-  background: var(--hireko-gradient);
-  clip-path: polygon(48% 0, 55% 0, 55% 48%, 100% 74%, 100% 87%, 50% 58%, 0 87%, 0 74%, 45% 48%, 45% 0);
+.hireko-mid-cta h2 {
+  margin: 0 0 0.5rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--hireko-navy);
 }
 
-.hireko-mid-cta > * {
-  position: relative;
-  z-index: 1;
+.hireko-mid-cta p {
+  margin: 0 0 1.25rem;
+  color: #475569;
+  font-size: 1.02rem;
+  max-width: 580px;
 }
 
+/* Download resource card */
 .hireko-resource {
   margin: 2.5rem 0;
-  padding: 1.4rem;
+  padding: 1.4rem 1.6rem;
   display: grid;
   grid-template-columns: 46px 1fr auto;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
   border: 1px solid var(--hireko-border);
-  border-left: 5px solid var(--hireko-orchid);
+  border-left: 4px solid var(--hireko-orchid);
   border-radius: 8px;
   background: #ffffff;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
 }
 
 .hireko-resource-icon {
@@ -1712,41 +1754,43 @@ body {
   border-radius: 8px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #eefaff, #eefbf8);
+  background: rgba(166, 75, 188, 0.1);
   color: var(--hireko-orchid);
   font-family: 'Poppins', sans-serif;
   font-weight: 800;
+  font-size: 0.82rem;
 }
 
 .hireko-resource h3 {
-  margin: 0 0 0.2rem;
+  margin: 0 0 0.25rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.05rem;
+  color: var(--hireko-navy);
 }
 
 .hireko-resource p {
   margin: 0;
   color: #475569;
+  font-size: 0.92rem;
 }
 
-.hireko-mid-cta h2 {
-  margin-top: 0;
-}
-
+/* Author Section */
 .hireko-author-card {
   display: flex;
   gap: 1.25rem;
   align-items: flex-start;
-  margin: 2.5rem 0;
-  padding: 1.5rem;
+  margin: 3rem 0;
+  padding: 1.6rem 1.8rem;
   border: 1px solid var(--hireko-border);
-  border-radius: 8px;
-  background: var(--hireko-soft);
+  border-radius: 10px;
+  background: #F8FAFC;
 }
 
 .author-avatar {
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--hireko-navy);
@@ -1754,8 +1798,8 @@ body {
 }
 
 .author-hireko-symbol {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
 
 .author-info {
@@ -1765,7 +1809,7 @@ body {
 .author-header {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
   margin-bottom: 0.25rem;
 }
 
@@ -1778,10 +1822,10 @@ body {
 
 .author-badge {
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--hireko-cerulean);
   background: rgba(0, 161, 212, 0.1);
-  padding: 0.15rem 0.5rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 999px;
 }
 
@@ -1793,16 +1837,16 @@ body {
 }
 
 .author-bio {
-  font-size: 0.92rem;
-  color: #344458;
+  font-size: 0.94rem;
+  color: #334155;
   line-height: 1.6;
   margin: 0 0 0.75rem 0;
 }
 
 .author-social {
   display: flex;
-  gap: 0.8rem;
-  font-size: 0.82rem;
+  gap: 1rem;
+  font-size: 0.85rem;
 }
 
 .author-social a {
@@ -1815,29 +1859,36 @@ body {
   text-decoration: underline;
 }
 
+/* Related Articles */
 .hireko-related {
-  max-width: 1180px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 1.25rem 4rem;
+  padding: 0 1.5rem 4rem;
 }
 
 .hireko-related h2 {
   font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--hireko-navy);
+  margin-bottom: 1.5rem;
 }
 
 .related-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
+  gap: 1.5rem;
 }
 
 .related-card {
   overflow: hidden;
   border: 1px solid var(--hireko-border);
+  border-radius: 10px;
   background: #ffffff;
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
   transition: transform 160ms ease, box-shadow 160ms ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .related-card:hover {
@@ -1846,53 +1897,63 @@ body {
 }
 
 .related-card-visual {
-  height: 58px;
+  height: 60px;
   position: relative;
   overflow: hidden;
   background: var(--hireko-navy);
 }
 
-.related-card-visual::after {
-  content: "";
-  position: absolute;
-  right: 1rem;
-  top: 0.7rem;
-  width: 3.4rem;
-  height: 3.4rem;
-  opacity: 0.75;
-  background: var(--hireko-gradient);
-  clip-path: polygon(48% 0, 55% 0, 55% 48%, 100% 74%, 100% 87%, 50% 58%, 0 87%, 0 74%, 45% 48%, 45% 0);
-}
-
 .related-card-body {
-  padding: 1.1rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .related-card .tag {
   color: var(--hireko-cerulean);
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: 0.76rem;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  margin-bottom: 0.35rem;
 }
 
 .related-card h3 {
-  margin: 0.45rem 0;
+  margin: 0 0 0.5rem;
   font-family: 'Poppins', sans-serif;
   font-size: 1.1rem;
-  line-height: 1.35;
+  line-height: 1.4;
+  color: var(--hireko-navy);
 }
 
 .related-card p {
-  margin: 0 0 0.85rem;
+  margin: 0 0 1rem;
   color: #475569;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  flex: 1;
+}
+
+.related-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
 }
 
 .read-time {
   color: var(--hireko-muted);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
 }
 
+.related-arrow {
+  color: var(--hireko-cerulean);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Final CTA Section */
 .hireko-final-cta {
   position: relative;
   overflow: hidden;
@@ -1903,40 +1964,54 @@ body {
 .hireko-final-cta-inner {
   position: relative;
   z-index: 1;
-  max-width: 1180px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 4rem 1.25rem;
+  padding: 4.5rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .hireko-final-cta h2 {
-  max-width: 690px;
-  margin: 0;
+  max-width: 650px;
+  margin: 0 0 0.5rem;
   font-family: 'Poppins', sans-serif;
-  font-size: 2.5rem;
-  line-height: 1.18;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
+.hireko-final-cta p {
+  margin: 0;
+  color: #CBD5E1;
+  font-size: 1.05rem;
+}
+
+/* Sources */
 .citation-list {
   margin-top: 3rem;
-  padding: 1.3rem;
+  padding: 1.4rem 1.6rem;
   border: 1px solid var(--hireko-border);
   border-radius: 8px;
-  background: #fbfdfe;
+  background: #F8FAFC;
 }
 
 .citation-list h4 {
   margin: 0 0 0.8rem;
   font-family: 'Poppins', sans-serif;
+  color: var(--hireko-navy);
+  font-size: 1rem;
 }
 
 .citation-list a {
   color: var(--hireko-cerulean);
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
+}
+
+.citation-list a:hover {
+  text-decoration: underline;
 }
 
 .lightbox-overlay,
@@ -1945,37 +2020,42 @@ body {
   display: none;
 }
 
+/* Responsive Breakpoints */
 @media (max-width: 980px) {
   .hireko-nav-links {
     display: none;
   }
 
-  .hireko-hero-inner {
-    padding-bottom: 1.5rem;
-  }
-
-  .hero-dashboard .visual-body {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .hero-dashboard .match-summary {
-    grid-column: 1 / -1;
-    min-height: auto;
-  }
-
   .hireko-layout {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
   }
 
   .hireko-toc {
     position: relative;
     top: auto;
+    border-left: none;
+    border: 1px solid var(--hireko-border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    background: #F8FAFC;
   }
 
-  .workflow-steps,
-  .related-grid {
+  .workflow-steps {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-dashboard .visual-body {
+    grid-template-columns: 1fr;
+  }
+
+  .hireko-final-cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -1989,30 +2069,11 @@ body {
   }
 
   .hireko-hero h1 {
-    font-size: 2.35rem;
+    font-size: 2.2rem;
   }
 
-  .hero-dashboard {
-    margin-top: 2rem;
-  }
-
-  .hero-dashboard .visual-body,
-  .hero-dashboard .visual-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-dashboard .match-summary {
-    grid-column: auto;
-  }
-
-  .hireko-login {
-    display: none;
-  }
-
-  .hireko-layout,
-  .hireko-related {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  .hireko-layout {
+    padding: 2.5rem 1rem;
   }
 
   .hireko-checklist ul,
@@ -2022,13 +2083,8 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .hireko-final-cta-inner {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .hireko-final-cta h2 {
-    font-size: 2rem;
+  .hireko-login {
+    display: none;
   }
 }
 """
@@ -2545,7 +2601,7 @@ async def render_full_html_package_async(
     sources_html = f'<section class="citation-list"><h4>Sources &amp; Further Reading</h4><ol>{source_items}</ol></section>'
 
     hireko_assets = {}
-    hireko_icon_svg = """<svg class="hireko-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M12 9v9c0 8-4 13-11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M24 5v15c0 9-5 15-14 20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M36 9v9c0 8 4 13 11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M9 42c7-5 14-5 22 0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>"""
+    hireko_icon_svg = """<svg class="hireko-icon" width="32" height="32" viewBox="0 0 48 48" fill="none" aria-hidden="true" style="width:32px;height:32px;display:inline-block;flex-shrink:0;"><path d="M12 9v9c0 8-4 13-11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M24 5v15c0 9-5 15-14 20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M36 9v9c0 8 4 13 11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M9 42c7-5 14-5 22 0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>"""
 
     # 6. Build factual article snapshot cards.
     section_count = len([t for t in raw_h2_titles if not re.search(r"faq|sources|further reading|references", t, re.IGNORECASE)])
@@ -2610,6 +2666,12 @@ async def render_full_html_package_async(
 
     # Build HTML Document according to exact selected Template Structural Rules
     if template_name in ("Hireko Editorial", "Hireko Vercel Editorial"):
+        headline_escaped = html.escape(title)
+        for kw in ("AI-Powered", "AI-driven", "AI-assisted", "AI Interviews", "AI Hiring", "AI"):
+            if kw in headline_escaped:
+                headline_escaped = headline_escaped.replace(kw, f'<span class="gradient-text">{kw}</span>', 1)
+                break
+
         html_document = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2617,6 +2679,9 @@ async def render_full_html_package_async(
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{html.escape(title)} | Hireko.ai Blog</title>
   <meta name="description" content="{html.escape(subtitle)}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script>
     function openLightbox(src, caption) {{
@@ -2636,7 +2701,7 @@ async def render_full_html_package_async(
   <nav class="hireko-nav" aria-label="Primary navigation">
     <div class="hireko-nav-inner">
       <a class="hireko-logo" href="/" aria-label="Hireko.ai home">
-        <svg class="hireko-logo-lockup" viewBox="0 0 302 62" role="img" aria-label="Hireko.ai">
+        <svg class="hireko-logo-lockup" width="160" height="33" viewBox="0 0 302 62" role="img" aria-label="Hireko.ai" style="width:160px;height:auto;max-width:100%;display:block;">
           <defs>
             <linearGradient id="hirekoLogoGradient" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#00A1D4"/><stop offset="1" stop-color="#6FCA9F"/></linearGradient>
           </defs>
@@ -2664,19 +2729,26 @@ async def render_full_html_package_async(
     </div>
   </nav>
 
-  <div class="hireko-breadcrumb" aria-label="Breadcrumb">
-    <a href="#">Home</a> / <a href="#">Blog</a> / <span>AI Hiring</span>
-  </div>
+  <nav class="hireko-breadcrumb" aria-label="Breadcrumb">
+    <a href="#">Home</a> &nbsp;/&nbsp; <a href="#">Blog</a> &nbsp;/&nbsp; <span class="active-category">AI Hiring</span>
+  </nav>
 
   <header class="hireko-hero">
+    <svg class="hero-bg-motif" width="280" height="280" viewBox="0 0 48 48" fill="none" aria-hidden="true" style="position:absolute;right:-30px;bottom:-40px;width:280px;height:280px;opacity:0.05;pointer-events:none;color:#6FCA9F;z-index:0;">
+      <path d="M12 9v9c0 8-4 13-11 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M24 5v15c0 9-5 15-14 20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M36 9v9c0 8 4 13 11 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M9 42c7-5 14-5 22 0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
     <div class="hireko-hero-inner">
       <div class="hireko-hero-copy">
         <span class="hireko-category">AI Hiring</span>
-        <h1>{html.escape(title).replace('AI', '<span class="gradient-text">AI</span>', 1)}</h1>
+        <h1>{headline_escaped}</h1>
         <p class="hireko-hero-dek">{html.escape(subtitle)}</p>
         <div class="hireko-meta">
-          <span>Sep 14, 2026</span>
+          <span>By <strong>Hireko Research Team</strong></span>
           <span>{read_minutes} min read</span>
+          <span>Sep 2026</span>
         </div>
       </div>
       <div class="hireko-dashboard-visual hero-dashboard" aria-label="Hireko.ai candidate matching dashboard illustration">
@@ -2719,14 +2791,25 @@ async def render_full_html_package_async(
 
     <article class="hireko-article">
       <section class="key-takeaway-card">
-        <h2>Key takeaway</h2>
+        <div class="key-takeaway-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A1D4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <span>KEY TAKEAWAY</span>
+        </div>
         <p>{html.escape(takeaways_items[0])}</p>
       </section>
 
       <div class="hireko-insight">
-        {hireko_icon_svg}
-        <h3>Hireko insight</h3>
-        <p>Strong hiring content should show the workflow, not just describe the trend. Hireko.ai connects resume processing, job context, candidate matching, conversational interviews, and objective scoring into one recruiting system.</p>
+        <svg class="insight-bg-motif" width="180" height="180" viewBox="0 0 48 48" fill="none" aria-hidden="true" style="position:absolute;right:-20px;bottom:-30px;width:180px;height:180px;opacity:0.04;pointer-events:none;color:#6FCA9F;z-index:0;">
+          <path d="M12 9v9c0 8-4 13-11 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M24 5v15c0 9-5 15-14 20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M36 9v9c0 8 4 13 11 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M9 42c7-5 14-5 22 0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div class="hireko-insight-header">
+          {hireko_icon_svg}
+          <h3>Hireko insight</h3>
+        </div>
+        <p>The most effective AI recruiting platforms do not remove recruiter judgment. They give teams cleaner evidence earlier, so humans can spend more time on calibration, candidate care, and final decisions.</p>
       </div>
 
       <section class="hireko-workflow" aria-labelledby="workflow-title">
@@ -2764,12 +2847,6 @@ async def render_full_html_package_async(
         </tbody>
       </table>
 
-      <div class="hireko-insight">
-        {hireko_icon_svg}
-        <h3>Hireko insight</h3>
-        <p>The most effective AI recruiting platforms do not remove recruiter judgment. They give teams cleaner evidence earlier, so humans can spend more time on calibration, candidate care, and final decisions.</p>
-      </div>
-
       <section class="hireko-mid-cta">
         <h2>Make hiring more intelligent</h2>
         <p>Hireko.ai helps businesses find, evaluate, and hire the right talent with intelligent automation.</p>
@@ -2787,7 +2864,7 @@ async def render_full_html_package_async(
 
       <section class="hireko-author-card">
         <div class="author-avatar" aria-hidden="true">
-          <svg viewBox="0 0 48 48" fill="none" class="author-hireko-symbol"><path d="M12 9v9c0 8-4 13-11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M24 5v15c0 9-5 15-14 20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M36 9v9c0 8 4 13 11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M9 42c7-5 14-5 22 0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+          <svg width="28" height="28" viewBox="0 0 48 48" fill="none" class="author-hireko-symbol" style="width:28px;height:28px;display:block;"><path d="M12 9v9c0 8-4 13-11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M24 5v15c0 9-5 15-14 20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M36 9v9c0 8 4 13 11 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M9 42c7-5 14-5 22 0" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
         </div>
         <div class="author-info">
           <div class="author-header">
@@ -2795,7 +2872,7 @@ async def render_full_html_package_async(
             <span class="author-badge">Verified Author</span>
           </div>
           <div class="author-role">AI Talent Acquisition &amp; Workforce Intelligence</div>
-          <p class="author-bio">Analyzing real-world recruitment workflows, candidate matching accuracy, and structured AI interview frameworks to help modern talent teams hire smarter.</p>
+          <p class="author-bio">Practical insights on AI-powered recruitment, candidate evaluation, hiring strategy, and the future of work.</p>
           <div class="author-social">
             <a href="https://hireko.ai" target="_blank" rel="noopener">hireko.ai</a>
             <a href="#" rel="noopener">LinkedIn</a>
@@ -2813,22 +2890,55 @@ async def render_full_html_package_async(
     <div class="related-grid">
       <article class="related-card">
         <div class="related-card-visual" aria-hidden="true"></div>
-        <div class="related-card-body"><span class="tag">AI Interviews</span><h3>What Is an AI Interview Platform?</h3><p>A practical guide to conversational interviews, job-context validation, and objective candidate scoring.</p><span class="read-time">7 min read</span></div>
+        <div class="related-card-body">
+          <span class="tag">AI Interviews</span>
+          <h3>What Is an AI Interview Platform?</h3>
+          <p>A practical guide to conversational interviews, job-context validation, and objective candidate scoring.</p>
+          <div class="related-card-footer">
+            <span class="read-time">7 min read</span>
+            <span class="related-arrow">&rarr;</span>
+          </div>
+        </div>
       </article>
       <article class="related-card">
         <div class="related-card-visual" aria-hidden="true"></div>
-        <div class="related-card-body"><span class="tag">Automation</span><h3>How AI Automates Enterprise Hiring Workflows</h3><p>Where automation helps recruiters move faster while keeping decisions explainable and human-led.</p><span class="read-time">8 min read</span></div>
+        <div class="related-card-body">
+          <span class="tag">Automation</span>
+          <h3>How AI Automates Enterprise Hiring Workflows</h3>
+          <p>Where automation helps recruiters move faster while keeping decisions explainable and human-led.</p>
+          <div class="related-card-footer">
+            <span class="read-time">8 min read</span>
+            <span class="related-arrow">&rarr;</span>
+          </div>
+        </div>
       </article>
       <article class="related-card">
         <div class="related-card-visual" aria-hidden="true"></div>
-        <div class="related-card-body"><span class="tag">Candidate Experience</span><h3>How to Create a 5-Star AI Interview Experience</h3><p>Design candidate interactions that feel structured, fair, and genuinely useful for both sides.</p><span class="read-time">6 min read</span></div>
+        <div class="related-card-body">
+          <span class="tag">Candidate Experience</span>
+          <h3>How to Create a 5-Star AI Interview Experience</h3>
+          <p>Design candidate interactions that feel structured, fair, and genuinely useful for both sides.</p>
+          <div class="related-card-footer">
+            <span class="read-time">6 min read</span>
+            <span class="related-arrow">&rarr;</span>
+          </div>
+        </div>
       </article>
     </div>
   </section>
 
   <section class="hireko-final-cta">
+    <svg class="cta-bg-motif" width="240" height="240" viewBox="0 0 48 48" fill="none" aria-hidden="true" style="position:absolute;right:-20px;bottom:-30px;width:240px;height:240px;opacity:0.06;pointer-events:none;color:#6FCA9F;z-index:0;">
+      <path d="M12 9v9c0 8-4 13-11 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M24 5v15c0 9-5 15-14 20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M36 9v9c0 8 4 13 11 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M9 42c7-5 14-5 22 0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
     <div class="hireko-final-cta-inner">
-      <h2>Build a smarter hiring process with Hireko.ai</h2>
+      <div>
+        <h2>Build a smarter hiring process with Hireko.ai</h2>
+        <p>Find, evaluate, and hire the right talent with intelligent automation.</p>
+      </div>
       <a class="hireko-btn" href="#">Get Started</a>
     </div>
   </section>
